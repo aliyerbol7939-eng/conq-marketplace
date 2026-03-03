@@ -34,6 +34,8 @@ export default async function AdminPage() {
     },
   });
 
+  
+
   const reports = await prisma.report.findMany({
     where: { resolvedAt: null },
     orderBy: { createdAt: "desc" },
@@ -47,6 +49,14 @@ export default async function AdminPage() {
       reporter: { select: { email: true } },
     },
   });
+
+  type AdminUser = {
+    id: string;            // change to number if your Prisma id is Int
+    email: string;
+    displayName: string | null;
+    role: string;
+    isDeleted: boolean;
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -64,9 +74,7 @@ export default async function AdminPage() {
             <h2 className="text-xl font-bold">Users</h2>
 
             <div className="mt-4 space-y-3">
-              {users.map((u: {
-                isDeleted: unknown; id: string; email: string; displayName: string | null; role: string 
-}) => (
+              {(users as AdminUser[]).map((u) => (
                 <div
                   key={u.id}
                   className="border rounded-xl p-3 flex items-center justify-between"
