@@ -64,7 +64,9 @@ export default async function AdminPage() {
             <h2 className="text-xl font-bold">Users</h2>
 
             <div className="mt-4 space-y-3">
-              {users.map((u) => (
+              {users.map((u: {
+                isDeleted: unknown; id: string; email: string; displayName: string | null; role: string 
+}) => (
                 <div
                   key={u.id}
                   className="border rounded-xl p-3 flex items-center justify-between"
