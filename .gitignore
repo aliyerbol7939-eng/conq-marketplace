@@ -44,3 +44,6 @@ next-env.d.ts
 
 # user uploads (do not commit)
 uploads/
+
+# user uploads
+uploads/
