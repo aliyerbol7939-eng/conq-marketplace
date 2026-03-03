@@ -11,6 +11,13 @@ type AdminUser = {
   isDeleted: boolean;
   createdAt: Date;
 };
+type AdminListing = {
+  id: string; // change to number if needed
+  title: string;
+  status: string;
+  createdAt: Date;
+  seller: { email: string };
+};
 
 export default async function AdminPage() {
   const token = (await cookies()).get("session")?.value;
@@ -31,7 +38,7 @@ export default async function AdminPage() {
     },
   });
 
-  const listings = await prisma.listing.findMany({ 
+  const listings: AdminListing[] = await prisma.listing.findMany({
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
