@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ListingStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum PurchaseStatus {
+  PENDING
+  PAID
+  REFUNDED
+  CANCELED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email        String  @unique
+  passwordHash String
+  displayName  String?
+  role         Role    @default(USER)
+
+  // Stripe Connect (seller payouts)
+  stripeAccountId String? @unique
+  payoutsEnabled  Boolean @default(false)
+
+  listings  Listing[]
+  purchases Purchase[] @relation("BuyerPurchases")
+
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+
+  reports Report[] @relation("UserReports")
+}
+
+model Listing {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status ListingStatus @default(DRAFT)
+
+  title       String
+  description String?
+  priceCents  Int     @default(0) // 0 = free
+  currency    String  @default("usd")
+
+  // media
+  thumbnailUrl    String?
+  previewVideoUrl String?
+
+  // file storage
+  fileUrl       String
+  originalName  String
+  fileSizeBytes BigInt
+
+  sellerId String
+  seller   User   @relation(fields: [sellerId], references: [id], onDelete: Restrict)
+
+  purchases Purchase[]
+
+  reports Report[] @relation("ListingReports")
+}
+
+model Purchase {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status PurchaseStatus @default(PENDING)
+
+  buyerId String
+  buyer   User   @relation("BuyerPurchases", fields: [buyerId], references: [id], onDelete: Restrict)
+
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Restrict)
+
+  amountCents      Int
+  platformFeeCents Int
+  sellerNetCents   Int
+  currency         String @default("usd")
+
+  paymentProvider   String? // "cloudpayments"
+  providerPaymentId String? // payment id from gateway
+}
+
+model Report {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  resolvedAt DateTime?
+
+  listingId String
+  listing   Listing @relation("ListingReports", fields: [listingId], references: [id])
+
+  reason  String
+  details String?
+
+  reporterId String?
+  reporter   User?   @relation("UserReports", fields: [reporterId], references: [id])
+}
