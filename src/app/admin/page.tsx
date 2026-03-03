@@ -3,6 +3,14 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { verifySessionToken } from "@/lib/auth";
+type AdminUser = {
+  id: string; // change to number if your Prisma id is Int
+  email: string;
+  displayName: string | null;
+  role: string;
+  isDeleted: boolean;
+  createdAt: Date;
+};
 
 export default async function AdminPage() {
   const token = (await cookies()).get("session")?.value;
@@ -11,7 +19,7 @@ export default async function AdminPage() {
   const session = await verifySessionToken(token);
   if (session.role !== "ADMIN") return notFound();
 
-  const users = await prisma.user.findMany({
+  const users: AdminUser[] = await prisma.user.findMany({
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
@@ -23,7 +31,7 @@ export default async function AdminPage() {
     },
   });
 
-  const listings = await prisma.listing.findMany({
+  const listings = await prisma.listing.findMany({ 
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
@@ -50,14 +58,6 @@ export default async function AdminPage() {
     },
   });
 
-  type AdminUser = {
-    id: string;            // change to number if your Prisma id is Int
-    email: string;
-    displayName: string | null;
-    role: string;
-    isDeleted: boolean;
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
@@ -74,7 +74,7 @@ export default async function AdminPage() {
             <h2 className="text-xl font-bold">Users</h2>
 
             <div className="mt-4 space-y-3">
-              {(users as AdminUser[]).map((u) => (
+              {users.map((u) => (
                 <div
                   key={u.id}
                   className="border rounded-xl p-3 flex items-center justify-between"
