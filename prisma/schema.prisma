@@ -47,6 +47,7 @@ model User {
   deletedAt DateTime?
 
   reports Report[] @relation("UserReports")
+  downloadTokens DownloadToken[]
 }
 
 model Listing {
@@ -81,6 +82,7 @@ model Listing {
   purchases Purchase[]
 
   reports Report[] @relation("ListingReports")
+  downloadTokens DownloadToken[]
 }
 
 model Purchase {
@@ -118,4 +120,17 @@ model Report {
 
   reporterId String?
   reporter   User?   @relation("UserReports", fields: [reporterId], references: [id])
+}
+
+model DownloadToken {
+  id         String   @id @default(cuid())
+  token      String   @unique
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+
+  listingId  String
+  listing    Listing  @relation(fields: [listingId], references: [id])
 }
