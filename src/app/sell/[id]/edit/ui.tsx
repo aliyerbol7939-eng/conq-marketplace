@@ -46,71 +46,125 @@ export default function EditListingForm(props: {
   }
 
   return (
-    <form onSubmit={submit} className="space-y-4">
-      <input
-        className="w-full border p-3 rounded"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Title"
-        required
-      />
-
-      <textarea
-        className="w-full border p-3 rounded"
-        rows={4}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Description"
-      />
-
-      <input
-        className="w-full border p-3 rounded"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        placeholder="Price (0 = free)"
-      />
-
-      <div className="text-sm text-gray-600">
-        Current thumbnail:{" "}
-        {props.initialThumb ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={props.initialThumb}
-            alt="thumb"
-            className="mt-2 w-48 rounded-xl border"
+    <form onSubmit={submit}>
+      <div style={{ display: "grid", gap: 18 }}>
+        <div>
+          <label style={{ display: "block", marginBottom: 10, fontWeight: 700 }}>
+            Title
+          </label>
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            style={{
+              width: "100%",
+              borderRadius: 16,
+              border: "1px solid rgba(127,255,212,0.08)",
+              background: "#0a1311",
+              color: "var(--foreground)",
+              padding: "14px 16px",
+              outline: "none",
+            }}
           />
-        ) : (
-          "none"
-        )}
+        </div>
+
+        <div>
+          <label style={{ display: "block", marginBottom: 10, fontWeight: 700 }}>
+            Description
+          </label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={5}
+            style={{
+              width: "100%",
+              borderRadius: 16,
+              border: "1px solid rgba(127,255,212,0.08)",
+              background: "#0a1311",
+              color: "var(--foreground)",
+              padding: "14px 16px",
+              outline: "none",
+              resize: "vertical",
+            }}
+          />
+        </div>
+
+        <div>
+          <label style={{ display: "block", marginBottom: 10, fontWeight: 700 }}>
+            Price
+          </label>
+          <input
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="0 = free"
+            style={{
+              width: "100%",
+              borderRadius: 16,
+              border: "1px solid rgba(127,255,212,0.08)",
+              background: "#0a1311",
+              color: "var(--foreground)",
+              padding: "14px 16px",
+              outline: "none",
+            }}
+          />
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: 16,
+          }}
+        >
+          <div className="glow-card p-5">
+            <div style={{ fontWeight: 700 }}>Current thumbnail</div>
+            {props.initialThumb ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={props.initialThumb}
+                alt="thumb"
+                style={{
+                  marginTop: 14,
+                  width: "100%",
+                  maxWidth: 260,
+                  borderRadius: 18,
+                  border: "1px solid rgba(127,255,212,0.08)",
+                }}
+              />
+            ) : (
+              <div className="conq-text-muted" style={{ marginTop: 12 }}>
+                None
+              </div>
+            )}
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setThumb(e.target.files?.[0] || null)}
+              style={{ marginTop: 16, width: "100%" }}
+            />
+          </div>
+
+          <div className="glow-card p-5">
+            <div style={{ fontWeight: 700 }}>Preview video</div>
+            <div className="conq-text-muted" style={{ marginTop: 10 }}>
+              {props.initialVideo ? "Current preview exists" : "No preview video"}
+            </div>
+
+            <input
+              type="file"
+              accept="video/*"
+              onChange={(e) => setVideo(e.target.files?.[0] || null)}
+              style={{ marginTop: 16, width: "100%" }}
+            />
+          </div>
+        </div>
+
+        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+          <button className="conq-btn conq-btn-primary">Save changes</button>
+          {msg ? <span className="conq-text-muted">{msg}</span> : null}
+        </div>
       </div>
-
-      <div>
-        <label className="text-sm">Replace thumbnail</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setThumb(e.target.files?.[0] || null)}
-        />
-      </div>
-
-      <div className="text-sm text-gray-600">
-        Current video: {props.initialVideo ? "yes" : "none"}
-      </div>
-
-      <div>
-        <label className="text-sm">Replace preview video</label>
-        <input
-          type="file"
-          accept="video/*"
-          onChange={(e) => setVideo(e.target.files?.[0] || null)}
-        />
-      </div>
-
-      <button className="bg-black text-white px-5 py-3 rounded-xl">
-        Save changes
-      </button>
-
-      {msg && <div className="text-sm">{msg}</div>}
     </form>
   );
 }

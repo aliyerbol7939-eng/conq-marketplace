@@ -8,13 +8,22 @@ export default async function DashboardPage() {
 
   if (!token) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="mb-4">Not logged in.</p>
-          <Link className="underline" href="/login">
-            Go to login
-          </Link>
-        </div>
+      <div className="page-shell grid-bg">
+        <section className="conq-section">
+          <div className="container-conq">
+            <div className="glow-card p-8 md:p-10">
+              <h1 className="conq-heading-lg">Not logged in</h1>
+              <p className="conq-text-muted mt-4">
+                Please log in to access your dashboard.
+              </p>
+              <div className="mt-6">
+                <Link href="/login" className="conq-btn conq-btn-primary">
+                  Go to login
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     );
   }
@@ -61,150 +70,239 @@ export default async function DashboardPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 text-black">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-2xl shadow p-6 flex items-start justify-between gap-6">
-          <div>
-            <h1 className="text-2xl font-bold">
-              Welcome{user?.displayName ? `, ${user.displayName}` : ""} 👋
-            </h1>
-            <p className="text-gray-600 mt-1">{user?.email}</p>
-            <p className="text-sm mt-2">
-              Role: <span className="font-semibold">{user?.role}</span>
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Link
-                href="/market"
-                className="px-4 py-2 rounded-xl border bg-white hover:bg-gray-50"
+    <div className="page-shell grid-bg">
+      <section className="conq-section">
+        <div className="container-conq">
+          <div className="glow-card p-8 md:p-10">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 20,
+                alignItems: "flex-start",
+                flexWrap: "wrap",
+              }}
             >
-                Marketplace
-            </Link>
+              <div>
+                <div className="conq-badge">Dashboard</div>
+                <h1 className="conq-heading-lg mt-5">
+                  Welcome{user?.displayName ? `, ${user.displayName}` : ""} 👋
+                </h1>
+                <p className="conq-text-muted mt-4" style={{ fontSize: 18 }}>
+                  {user?.email}
+                </p>
+                <p className="conq-text-muted mt-2">
+                  Role: <span style={{ color: "var(--foreground)", fontWeight: 700 }}>{user?.role}</span>
+                </p>
+              </div>
 
-            <Link
-                href="/library"
-                className="px-4 py-2 rounded-xl border bg-white hover:bg-gray-50"
-            >
-                Library
-            </Link>
-
-            <Link
-                href="/settings"
-                className="px-4 py-2 rounded-xl border bg-white hover:bg-gray-50"
-            >
-                Settings
-            </Link>
-        </div>
-        </div>
-
-        <div className="grid md:grid-cols-4 gap-4 mt-6">
-          <div className="bg-white rounded-2xl shadow p-5">
-            <div className="text-sm text-black">Your listings</div>
-            <div className="text-3xl font-bold mt-2">{listingsCount}</div>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow p-5">
-            <div className="text-sm text-black">Your purchases</div>
-            <div className="text-3xl font-bold mt-2">{purchasesCount}</div>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow p-5">
-            <div className="text-sm text-black">Sales</div>
-            <div className="text-3xl font-bold mt-2">
-              {salesStats._count || 0}
+              <div
+                style={{
+                  display: "flex",
+                  gap: 10,
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                }}
+              >
+                <Link href="/market" className="conq-btn conq-btn-dark">
+                  Marketplace
+                </Link>
+                <Link href="/library" className="conq-btn conq-btn-dark">
+                  Library
+                </Link>
+                <Link href="/settings" className="conq-btn conq-btn-primary">
+                  Settings
+                </Link>
+              </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-5">
-            <div className="text-sm text-black">Earned (90%)</div>
-            <div className="text-3xl font-bold mt-2">
-              ${((salesStats._sum.sellerNetCents || 0) / 100).toFixed(2)}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: 16,
+              marginTop: 24,
+            }}
+          >
+            <div className="glow-card p-6">
+              <div className="conq-text-muted">Your listings</div>
+              <div style={{ fontSize: 44, fontWeight: 800, marginTop: 12 }}>
+                {listingsCount}
+              </div>
+            </div>
+
+            <div className="glow-card p-6">
+              <div className="conq-text-muted">Your purchases</div>
+              <div style={{ fontSize: 44, fontWeight: 800, marginTop: 12 }}>
+                {purchasesCount}
+              </div>
+            </div>
+
+            <div className="glow-card p-6">
+              <div className="conq-text-muted">Sales</div>
+              <div style={{ fontSize: 44, fontWeight: 800, marginTop: 12 }}>
+                {salesStats._count || 0}
+              </div>
+            </div>
+
+            <div className="glow-card p-6">
+              <div className="conq-text-muted">Earned (90%)</div>
+              <div style={{ fontSize: 44, fontWeight: 800, marginTop: 12 }}>
+                ${((salesStats._sum.sellerNetCents || 0) / 100).toFixed(2)}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-4 bg-white rounded-2xl shadow p-4 text-sm text-gray-700">
-          Platform fee earned from your sales:{" "}
-          <span className="font-semibold">
-            ${((salesStats._sum.platformFeeCents || 0) / 100).toFixed(2)}
-          </span>
-        </div>
-
-        {user?.role === "ADMIN" && (
-          <div className="mt-6 bg-white rounded-2xl shadow p-6">
-            <h2 className="text-xl font-bold">Admin</h2>
-            <p className="text-gray-600 mt-1">
-              Manage users & listings (we’ll build this next).
-            </p>
-            <Link className="underline mt-2 inline-block" href="/admin">
-              Go to admin →
-            </Link>
-          </div>
-        )}
-
-        <div className="mt-6 bg-white rounded-2xl shadow p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold">Your listings</h2>
-            <Link className="underline" href="/sell">
-              + New listing
-            </Link>
+          <div className="glow-card p-5" style={{ marginTop: 16 }}>
+            <span className="conq-text-muted">Platform fee earned from your sales: </span>
+            <span style={{ fontWeight: 700 }}>
+              ${((salesStats._sum.platformFeeCents || 0) / 100).toFixed(2)}
+            </span>
           </div>
 
-          {listings.length === 0 ? (
-            <p className="text-gray-600 mt-3">No listings yet.</p>
-          ) : (
-            <div className="grid sm:grid-cols-2 gap-4 mt-4">
-              {listings.map((l) => (
-                <div
-                  key={l.id}
-                  className="border rounded-2xl p-4 flex gap-4 items-start justify-between"
-                >
-                  <div className="flex gap-4 items-start">
-                    <div className="w-24 h-24 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0">
-                      {l.thumbnailUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={l.thumbnailUrl}
-                          alt={l.title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : null}
-                    </div>
-
-                    <div className="flex-1">
-                      <div className="font-semibold">{l.title}</div>
-                      <div className="text-sm text-gray-600 mt-1">
-                        {l.priceCents === 0
-                          ? "Free"
-                          : `$${(l.priceCents / 100).toFixed(2)}`}
-                        {" • "}
-                        <span className="uppercase">{l.status}</span>
-                      </div>
-                      <div className="text-xs text-gray-500 mt-2">
-                        {new Date(l.createdAt).toLocaleString()}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col items-end gap-2">
-                    <Link
-                        href={`/sell/${l.id}/edit`}
-                        className="text-sm hover:underline"
-                    >
-                        Edit
-                    </Link>
-
-                    <form action={`/api/listings/delete/${l.id}`} method="post">
-                        <button className="text-red-600 text-sm hover:underline">Delete</button>
-                    </form>
-                    </div>
-                </div>
-              ))}
+          {user?.role === "ADMIN" && (
+            <div className="glow-card p-7" style={{ marginTop: 20 }}>
+              <div className="conq-badge">Admin access</div>
+              <h2 style={{ fontSize: 32, fontWeight: 800, marginTop: 18 }}>
+                Control center
+              </h2>
+              <p className="conq-text-muted mt-3">
+                Review users, listings, reports, and moderation activity.
+              </p>
+              <div className="mt-6">
+                <Link href="/admin" className="conq-btn conq-btn-primary">
+                  Go to admin
+                </Link>
+              </div>
             </div>
           )}
+
+          <div className="glow-card p-7" style={{ marginTop: 20 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 16,
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <div>
+                <div className="conq-badge">Your listings</div>
+                <h2 style={{ fontSize: 32, fontWeight: 800, marginTop: 16 }}>
+                  Manage your products
+                </h2>
+              </div>
+
+              <Link href="/sell" className="conq-btn conq-btn-primary">
+                + New listing
+              </Link>
+            </div>
+
+            {listings.length === 0 ? (
+              <div className="conq-text-muted" style={{ marginTop: 24 }}>
+                No listings yet.
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))",
+                  gap: 18,
+                  marginTop: 24,
+                }}
+              >
+                {listings.map((l) => (
+                  <div
+                    key={l.id}
+                    className="glow-card p-4"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: 16,
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <div style={{ display: "flex", gap: 16, flex: 1 }}>
+                      <div
+                        style={{
+                          width: 96,
+                          height: 96,
+                          borderRadius: 18,
+                          overflow: "hidden",
+                          flexShrink: 0,
+                          background: "#0b1412",
+                          border: "1px solid rgba(127,255,212,0.08)",
+                        }}
+                      >
+                        {l.thumbnailUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={l.thumbnailUrl}
+                            alt={l.title}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              display: "block",
+                            }}
+                          />
+                        ) : null}
+                      </div>
+
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 24, fontWeight: 800 }}>{l.title}</div>
+                        <div className="conq-text-muted" style={{ marginTop: 8 }}>
+                          {l.priceCents === 0
+                            ? "Free"
+                            : `$${(l.priceCents / 100).toFixed(2)}`}
+                          {" • "}
+                          <span style={{ color: "var(--foreground)" }}>{l.status}</span>
+                        </div>
+                        <div className="conq-text-muted" style={{ marginTop: 8, fontSize: 13 }}>
+                          {new Date(l.createdAt).toLocaleString()}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 10,
+                        alignItems: "flex-end",
+                      }}
+                    >
+                      <Link
+                        href={`/sell/${l.id}/edit`}
+                        className="conq-btn conq-btn-dark"
+                        style={{ padding: "10px 14px" }}
+                      >
+                        Edit
+                      </Link>
+
+                      <form action={`/api/listings/delete/${l.id}`} method="post">
+                        <button
+                          className="conq-btn"
+                          style={{
+                            padding: "10px 14px",
+                            background: "rgba(255,92,122,0.12)",
+                            color: "#ff7a93",
+                            border: "1px solid rgba(255,92,122,0.2)",
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

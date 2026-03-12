@@ -1,39 +1,49 @@
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow p-6">
-        <h1 className="text-3xl font-bold">Terms of Service</h1>
+    <div className="page-shell grid-bg">
+      <section className="conq-section">
+        <div className="container-conq" style={{ maxWidth: 900 }}>
+          <div className="glow-card p-8 md:p-10">
+            <div className="conq-badge">Legal</div>
+            <h1 className="conq-heading-lg mt-5">Terms of Service</h1>
 
-        <div className="mt-4 space-y-3 text-gray-700 text-sm leading-relaxed">
-          <p>
-            Conq is a digital marketplace where creators sell digital files.
-            By using Conq, you agree to these terms.
-          </p>
+            <div
+              className="conq-text-muted"
+              style={{ marginTop: 24, lineHeight: 1.9, fontSize: 16 }}
+            >
+              <p>
+                Conq is a digital marketplace where creators upload and sell digital
+                files. By using Conq, you agree to these terms.
+              </p>
 
-          <p>
-            Sellers are responsible for their content and must have the rights
-            to distribute files they upload.
-          </p>
+              <p>
+                Sellers are responsible for the files they upload and must own the
+                rights required to distribute and sell their content.
+              </p>
 
-          <p>
-            Buyers receive a non-exclusive license to use purchased files.
-          </p>
+              <p>
+                Buyers receive access to digital products under the license or usage
+                terms defined by the seller and platform rules.
+              </p>
 
-          <p>
-            Conq may remove listings or accounts that violate policies,
-            including illegal, infringing, or harmful content.
-          </p>
+              <p>
+                Conq may remove listings, disable accounts, or restrict access where
+                content is unsafe, misleading, infringing, illegal, or violates
+                platform policies.
+              </p>
 
-          <p>
-            Payments, refunds, and disputes follow marketplace rules
-            defined by Conq.
-          </p>
+              <p>
+                Payments, disputes, refunds, moderation, and download access are
+                governed by platform rules and any future payment provider terms.
+              </p>
 
-          <p>
-            Continued use of Conq means you accept these terms.
-          </p>
+              <p>
+                Continued use of Conq means you accept these terms.
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

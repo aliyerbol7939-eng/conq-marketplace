@@ -12,8 +12,12 @@ export default function DownloadButton({
   const [msg, setMsg] = useState("");
 
   async function go() {
-    setMsg("Preparing...");
-    const res = await fetch(`/api/download-token/${listingId}`, { method: "POST" });
+    setMsg("Preparing secure access...");
+
+    const res = await fetch(`/api/download-token/${listingId}`, {
+      method: "POST",
+    });
+
     const data = await res.json();
 
     if (!res.ok) {
@@ -25,14 +29,26 @@ export default function DownloadButton({
   }
 
   return (
-    <div className="mt-6">
+    <div style={{ marginTop: 24 }}>
       <button
         onClick={go}
-        className="w-full bg-black text-white py-3 rounded-xl"
+        className="conq-btn conq-btn-primary"
+        style={{
+          width: "100%",
+          justifyContent: "center",
+          minHeight: 54,
+          fontSize: 16,
+          fontWeight: 800,
+        }}
       >
         {isFree ? "Download free" : "Buy now"}
       </button>
-      {msg && <div className="text-sm text-gray-600 mt-2">{msg}</div>}
+
+      {msg ? (
+        <div className="conq-text-muted" style={{ marginTop: 10, fontSize: 14 }}>
+          {msg}
+        </div>
+      ) : null}
     </div>
   );
 }

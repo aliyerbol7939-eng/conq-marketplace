@@ -17,52 +17,86 @@ export default async function HomePage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero */}
-      <section className="px-6 pt-12 pb-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-3xl shadow p-8 md:p-12">
-            <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                Sell digital files with a premium storefront.
+    <div className="page-shell grid-bg">
+      <section className="conq-section">
+        <div className="container-conq">
+          <div className="glow-card p-8 md:p-12 overflow-hidden relative">
+            <div className="absolute inset-0 pointer-events-none opacity-60">
+              <div
+                style={{
+                  position: "absolute",
+                  width: 420,
+                  height: 420,
+                  right: -80,
+                  top: -80,
+                  borderRadius: "9999px",
+                  background:
+                    "radial-gradient(circle, rgba(127,255,212,0.18), transparent 65%)",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  width: 320,
+                  height: 320,
+                  left: "42%",
+                  bottom: -120,
+                  borderRadius: "9999px",
+                  background:
+                    "radial-gradient(circle, rgba(139,92,246,0.18), transparent 70%)",
+                }}
+              />
+            </div>
+
+            <div className="relative z-10 max-w-4xl">
+              <div className="conq-badge">Creator marketplace</div>
+
+              <h1 className="conq-heading-xl mt-6">
+                Sell digital files with a futuristic storefront.
               </h1>
-              <p className="text-gray-600 mt-4 text-lg">
-                Conq helps creators upload, showcase, and sell digital files —
-                with secure downloads, a marketplace, and admin moderation.
+
+              <p
+                className="conq-text-muted"
+                style={{
+                  fontSize: "clamp(18px, 2vw, 24px)",
+                  lineHeight: 1.6,
+                  maxWidth: 820,
+                  marginTop: 24,
+                }}
+              >
+                Conq helps creators upload, protect, showcase, and sell digital
+                products with secure delivery, moderation tools, and premium
+                presentation.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mt-6">
-                <Link
-                  href="/sell"
-                  className="bg-black text-white px-6 py-3 rounded-2xl text-center"
-                >
+              <div className="flex flex-col sm:flex-row gap-3 mt-8">
+                <Link href="/sell" className="conq-btn conq-btn-primary">
                   Start selling
                 </Link>
-                <Link
-                  href="/market"
-                  className="px-6 py-3 rounded-2xl border bg-white hover:bg-gray-50 text-center"
-                >
+                <Link href="/market" className="conq-btn conq-btn-dark">
                   Browse marketplace
                 </Link>
               </div>
 
-              <div className="grid sm:grid-cols-3 gap-3 mt-8 text-sm text-gray-700">
-                <div className="bg-gray-50 rounded-2xl p-4">
-                  <div className="font-semibold">Secure downloads</div>
-                  <div className="text-gray-600 mt-1">
-                    Signed short-lived links.
+              <div className="grid md:grid-cols-3 gap-4 mt-10">
+                <div className="glow-card p-5">
+                  <div className="font-semibold text-lg">Secure downloads</div>
+                  <div className="conq-text-muted mt-2">
+                    Expiring access and protected delivery flow.
                   </div>
                 </div>
-                <div className="bg-gray-50 rounded-2xl p-4">
-                  <div className="font-semibold">Creator tools</div>
-                  <div className="text-gray-600 mt-1">
-                    Upload, edit, archive listings.
+
+                <div className="glow-card p-5">
+                  <div className="font-semibold text-lg">Creator tools</div>
+                  <div className="conq-text-muted mt-2">
+                    Upload, edit, archive, analyze, and manage listings.
                   </div>
                 </div>
-                <div className="bg-gray-50 rounded-2xl p-4">
-                  <div className="font-semibold">Admin moderation</div>
-                  <div className="text-gray-600 mt-1">
-                    Manage users & listings.
+
+                <div className="glow-card p-5">
+                  <div className="font-semibold text-lg">Moderation ready</div>
+                  <div className="conq-text-muted mt-2">
+                    Reports, admin controls, and safety review pipeline.
                   </div>
                 </div>
               </div>
@@ -71,60 +105,94 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured */}
-      <section className="px-6 pb-16">
-        <div className="max-w-6xl mx-auto">
+      <section className="pb-20">
+        <div className="container-conq">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-bold">Featured</h2>
-              <p className="text-gray-600 mt-1">
-                Latest files from the marketplace.
+              <div className="conq-badge">Featured</div>
+              <h2 className="conq-heading-lg mt-4">Latest marketplace drops</h2>
+              <p className="conq-text-muted mt-3">
+                New files from creators using Conq.
               </p>
             </div>
 
-            <Link className="underline" href="/market">
-              View all →
+            <Link href="/market" className="conq-btn conq-btn-dark">
+              View all
             </Link>
           </div>
 
           {featured.length === 0 ? (
-            <div className="bg-white rounded-2xl shadow p-6 mt-6">
-              No listings yet. Be the first to sell!
+            <div className="glow-card p-6 mt-8 conq-text-muted">
+              No listings yet. Be the first creator to publish on Conq.
             </div>
           ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
               {featured.map((l) => (
                 <Link
                   key={l.id}
                   href={`/market/${l.id}`}
-                  className="bg-white rounded-2xl shadow hover:shadow-md transition p-4"
+                  className="glow-card p-4 block"
                 >
-                  <div className="w-full aspect-video rounded-xl bg-gray-100 overflow-hidden">
+                  <div
+                    style={{
+                      width: "100%",
+                      aspectRatio: "16 / 9",
+                      borderRadius: 18,
+                      overflow: "hidden",
+                      background: "#0b1412",
+                      border: "1px solid rgba(127,255,212,0.08)",
+                    }}
+                  >
                     {l.thumbnailUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={l.thumbnailUrl}
                         alt={l.title}
-                        className="w-full h-full object-cover"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          display: "block",
+                        }}
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                      <div
+                        className="conq-text-muted"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
                         No thumbnail
                       </div>
                     )}
                   </div>
 
-                  <div className="mt-3">
-                    <div className="font-semibold line-clamp-2">{l.title}</div>
+                  <div style={{ marginTop: 16 }}>
+                    <div
+                      style={{
+                        fontWeight: 700,
+                        fontSize: 18,
+                        lineHeight: 1.35,
+                      }}
+                    >
+                      {l.title}
+                    </div>
 
-                    <div className="text-sm text-gray-600 mt-1">
+                    <div className="conq-text-muted" style={{ marginTop: 8 }}>
                       {l.priceCents === 0
                         ? "Free"
                         : `$${(l.priceCents / 100).toFixed(2)}`}
                       {l.seller?.displayName ? ` • ${l.seller.displayName}` : ""}
                     </div>
 
-                    <div className="text-xs text-gray-500 mt-2">
+                    <div
+                      className="conq-text-muted"
+                      style={{ marginTop: 8, fontSize: 13 }}
+                    >
                       {new Date(l.createdAt).toLocaleDateString()}
                     </div>
                   </div>

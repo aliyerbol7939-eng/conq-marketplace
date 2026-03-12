@@ -35,20 +35,37 @@ export default async function EditListingPage({
   if (listing.sellerId !== session.userId) return notFound();
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-between">
-          <Link className="underline" href="/dashboard">
-            ← Back
-          </Link>
-          <div className="text-sm text-gray-600 uppercase">{listing.status}</div>
-        </div>
+    <div className="page-shell grid-bg">
+      <section className="conq-section">
+        <div className="container-conq" style={{ maxWidth: 980 }}>
+          <div className="glow-card p-8 md:p-10">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 16,
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <div>
+                <div className="conq-badge">Edit listing</div>
+                <h1 className="conq-heading-lg mt-5">Refine your product page</h1>
+                <p className="conq-text-muted mt-4" style={{ fontSize: 18 }}>
+                  Update title, description, pricing, and media.
+                </p>
+              </div>
 
-        <div className="bg-white rounded-2xl shadow p-6 mt-4">
-          <h1 className="text-2xl font-bold">Edit listing</h1>
-          <p className="text-gray-600 mt-1">Update title, price, thumbnail, video.</p>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <Link href="/dashboard" className="conq-btn conq-btn-dark">
+                  Dashboard
+                </Link>
+                <div className="conq-btn conq-btn-primary">{listing.status}</div>
+              </div>
+            </div>
+          </div>
 
-          <div className="mt-6">
+          <div className="glow-card p-8 md:p-10" style={{ marginTop: 24 }}>
             <EditListingForm
               listingId={listing.id}
               initialTitle={listing.title}
@@ -59,7 +76,7 @@ export default async function EditListingPage({
             />
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

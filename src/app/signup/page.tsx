@@ -1,18 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-export default function SignupPage() {
-  const router = useRouter();
+
+import { useRouter } from "next/navigation";export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     const res = await fetch("/api/auth/signup", {
       method: "POST",
@@ -21,6 +22,8 @@ export default function SignupPage() {
     });
 
     const data = await res.json();
+    setLoading(false);
+
     if (!res.ok) {
       setError(data.error || "Signup failed");
       return;
@@ -30,51 +33,112 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-2xl shadow w-full max-w-md"
-      >
-        <h1 className="text-2xl font-bold mb-6">Create account</h1>
+    <div className="page-shell grid-bg">
+      <section className="conq-section">
+        <div className="container-conq" style={{ maxWidth: 620 }}>
+          <div className="glow-card p-8 md:p-10" style={{ position: "relative", overflow: "hidden" }}>
+            <div
+              style={{
+                position: "absolute",
+                left: -100,
+                bottom: -100,
+                width: 260,
+                height: 260,
+                borderRadius: 9999,
+                background: "radial-gradient(circle, rgba(139,92,246,0.16), transparent 70%)",
+                pointerEvents: "none",
+              }}
+            />
 
-        <input
-          placeholder="Name"
-          className="w-full border p-3 rounded mb-3"
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
-        />
+            <div className="conq-badge">Join Conq</div>
+            <h1 className="conq-heading-lg mt-5">Create your account</h1>
+            <p className="conq-text-muted mt-4" style={{ fontSize: 18 }}>
+              Start selling, buying, managing files, and building your creator storefront.
+            </p>
 
-        <input
-          placeholder="Email"
-          type="email"
-          className="w-full border p-3 rounded mb-3"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+            <form onSubmit={handleSubmit} style={{ marginTop: 28 }}>
+              <div style={{ display: "grid", gap: 14 }}>
+                <input
+                  placeholder="Display name"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  style={{
+                    width: "100%",
+                    borderRadius: 16,
+                    border: "1px solid rgba(127,255,212,0.08)",
+                    background: "#0a1311",
+                    color: "var(--foreground)",
+                    padding: "14px 16px",
+                    outline: "none",
+                  }}
+                />
 
-        <input
-          placeholder="Password"
-          type="password"
-          className="w-full border p-3 rounded mb-4"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  style={{
+                    width: "100%",
+                    borderRadius: 16,
+                    border: "1px solid rgba(127,255,212,0.08)",
+                    background: "#0a1311",
+                    color: "var(--foreground)",
+                    padding: "14px 16px",
+                    outline: "none",
+                  }}
+                />
 
-        {error && <div className="text-red-500 mb-3">{error}</div>}
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  style={{
+                    width: "100%",
+                    borderRadius: 16,
+                    border: "1px solid rgba(127,255,212,0.08)",
+                    background: "#0a1311",
+                    color: "var(--foreground)",
+                    padding: "14px 16px",
+                    outline: "none",
+                  }}
+                />
+              </div>
 
-        <button className="w-full bg-black text-white p-3 rounded">
-          Sign up
-        </button>
+              {error ? (
+                <div
+                  style={{
+                    marginTop: 14,
+                    borderRadius: 14,
+                    padding: "12px 14px",
+                    background: "rgba(255,92,122,0.1)",
+                    border: "1px solid rgba(255,92,122,0.18)",
+                    color: "#ff9aae",
+                  }}
+                >
+                  {error}
+                </div>
+              ) : null}
 
-        <p className="text-sm mt-4">
-          Already have account?{" "}
-          <a className="underline" href="/login">
-            Login
-          </a>
-        </p>
-      </form>
+              <div style={{ marginTop: 18, display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <button className="conq-btn conq-btn-primary" disabled={loading}>
+                  {loading ? "Creating..." : "Create account"}
+                </button>
+              </div>
+            </form>
+
+            <div className="conq-text-muted" style={{ marginTop: 22 }}>
+              Already have an account?{" "}
+              <a href="/login" style={{ color: "var(--brand)", fontWeight: 700 }}>
+                Login
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

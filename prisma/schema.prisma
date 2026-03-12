@@ -13,8 +13,10 @@ enum Role {
 
 enum ListingStatus {
   DRAFT
+  REVIEW_PENDING
   PUBLISHED
   ARCHIVED
+  REJECTED
 }
 
 enum PurchaseStatus {
@@ -67,6 +69,11 @@ model Listing {
   fileUrl       String
   originalName  String
   fileSizeBytes BigInt
+
+  moderationReasons String?
+  fileSha256        String?
+  thumbSha256       String?
+  avStatus          String?   @default("PENDING")
 
   sellerId String
   seller   User   @relation(fields: [sellerId], references: [id], onDelete: Restrict)
